@@ -4,7 +4,6 @@ rm(list = ls(all= TRUE))
 ##環境設定
 
 
-##請更改到網站的目錄
 ##設定精確到小數點第6位
 options(digits = 6)
 ##載入所需套件	
@@ -30,7 +29,7 @@ utfunc = function(data){
 ##調整時間格式問題
 formattime <- function(t){
 					
-	paste(as.character(as.POSIXlt(as.numeric(t),origin = "1970-01-01")),"CST")
+	paste(as.character(as.POSIXlt(Sys.time(), "Asia/Taipei")))
 					
 }
 
