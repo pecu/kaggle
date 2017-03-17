@@ -29,7 +29,7 @@ utfunc = function(data){
 ##調整時間格式問題
 formattime <- function(t){
 					
-	paste(as.character(as.POSIXlt(Sys.time(), "Asia/Taipei")))
+	paste(as.character(as.POSIXlt(Sys.time(), "Asia/Taipei")),'CST')
 					
 }
 
@@ -140,12 +140,12 @@ server <- function(input,output,session){
 					actual = newdata[,2]
 					predict = newdata[,3]
 					user.rs = round(r.square(as.numeric(actual),as.numeric(predict)),6)
-					user.uploadtime = Sys.time()
+					user.uploadtime = paste(as.character(as.POSIXlt(Sys.time(), "Asia/Taipei")),'CST')
 			
 					if (nrow(charts)==0){
 			
 						##若排行榜為空，直接建立新的表
-						upt=paste(as.character(user.uploadtime),"CST")
+						upt=  as.character(user.uploadtime)
 						charts = data.frame("1",user.teamnumber,user.teamname,user.rs,upt)
 						colnames(charts) <- c("排名","隊號","隊名","R squared","上傳時間")
 						write.csv(charts,"charts.csv",row.names=F)
