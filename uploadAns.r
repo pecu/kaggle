@@ -4,7 +4,6 @@ rm(list = ls(all= TRUE))
 ##環境設定
 
 
-##請更改到網站的目錄
 
 ##設定精確到小數點第6位
 options(digits = 6)
