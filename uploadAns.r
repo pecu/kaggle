@@ -111,9 +111,7 @@ server <- function(input,output){
 
 			##計算R_Squared與建立上傳檔與隊伍的資訊
 			user.teamnumber = as.character(utfunc(uploaddata))
-			if(as.integer(user.teamnumber)>=max(as.integer(teamdata$teamnumber))){
-			  user.teamnumber = as.integer(10)
-			}
+			user.teamnumber = as.integer(user.teamnumber)
 			user.teamname = teamdata[teamdata$teamnumber==user.teamnumber,2]
 			actual = newdata[,2]
 			predict = newdata[,3]
