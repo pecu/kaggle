@@ -21,6 +21,7 @@ rm(list = ls(all= TRUE))
 
 
 ##請更改到網站的目錄
+
 ##設定精確到小數點第6位
 options(digits = 6)
 ##載入所需套件	
@@ -75,9 +76,8 @@ ui <- fluidPage(
 
 
 server <- function(input,output){
-	
-	##讀入主辦單位驗證檔
-	rawdata <- read.csv("rawdata.csv",header=T)
+  #讀入答案
+	answer <- read.csv('answer.csv')
 	##讀入隊伍名稱資料檔
 	teamdata <- read.csv("teamdata.csv",header=T)
 	teamdata$teamnumber <- as.character(round(teamdata$teamnumber))
@@ -107,10 +107,13 @@ server <- function(input,output){
 			uploaddata <- read.csv(inFile$datapath, header=T, sep=",")
 			##merge驗證檔和上傳檔
 			colnames(uploaddata)[2]<-"id"
-			newdata <- merge(rawdata,uploaddata[,2:3],by="id",all.x=T)
+			newdata <- merge(answer[,c(1,4)],uploaddata[,2:3],by="id",all.x=T)
 
 			##計算R_Squared與建立上傳檔與隊伍的資訊
 			user.teamnumber = as.character(utfunc(uploaddata))
+			if(as.integer(user.teamnumber)>=max(as.integer(teamdata$teamnumber))){
+			  user.teamnumber = as.integer(10)
+			}
 			user.teamname = teamdata[teamdata$teamnumber==user.teamnumber,2]
 			actual = newdata[,2]
 			predict = newdata[,3]
