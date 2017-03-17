@@ -21,7 +21,6 @@ rm(list = ls(all= TRUE))
 
 
 ##請更改到網站的目錄
-setwd("E:/Google 雲端硬碟/與筆電共用/Kaggle") 
 ##設定精確到小數點第6位
 options(digits = 6)
 ##載入所需套件	
