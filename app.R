@@ -193,7 +193,7 @@ server <- function(input,output,session){
 								##R_squared有提高，則更新、重新排序
 								charts[charts[,2]==user.teamnumber,4] <- user.rs
 								levels(charts[,5]) <- c(levels(charts[,5]),formattime(user.uploadtime))
-								charts[charts[,2]==user.teamnumber,5] <- paste(as.character(user.uploadtime),"CST")
+								charts[charts[,2]==user.teamnumber,5] <- as.character(user.uploadtime)
 								##R_squared相同者看誰最早交，最早交者勝
 								colnames(charts) <- c("rank","teamnumber","teamname","rsquared","uploadtime")
 								charts[,4] = round(charts[,4],6)
