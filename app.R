@@ -53,6 +53,7 @@ ui <- fluidPage(
                          )
     ),
     mainPanel(
+		textOutput('rsmessage'),
 		textOutput('errormessage'),
 		tableOutput('contents')
     )
@@ -82,7 +83,7 @@ server <- function(input,output,session){
 		if (is.null(inFile)){
 		
 			output$errormessage <- renderText({NULL})
-
+			output$rsmessage <- renderText({NULL})
 			##若沒有上傳檔案，顯示檔案中舊的排行榜
 			charts[,4] <- as.numeric(charts[,4])
 			charts[,4] = round(charts[,4],6)
@@ -92,7 +93,7 @@ server <- function(input,output,session){
 		}	else	{
 
 			output$errormessage <- renderText({NULL})
-
+			output$rsmessage <- renderText({NULL})
 			##若有上傳檔案則匯入檔案內容，計算出R square，更新排行榜
 
 			
@@ -104,7 +105,7 @@ server <- function(input,output,session){
 			if ( length(user.teamname) == 0){
 									
 				output$errormessage <- renderText({"上傳失敗：您的隊伍不存在，請確認隊號是否正確"})
-				
+				output$rsmessage <- renderText({NULL})
 				charts[,4] <- as.numeric(charts[,4])
 				charts[,4] = round(charts[,4],6)
 				colnames(charts) <- c("排名","隊號","隊名","R squared","上傳時間")
@@ -113,7 +114,8 @@ server <- function(input,output,session){
 			} else {
 			
 				if (nrow(uploaddata) < nrow(rawdata)) {
-			
+				
+					output$rsmessage <- renderText({NULL})
 					output$errormessage <- renderText({"上傳失敗：您上傳的資料檔資料筆數過少"})
 					charts[,4] <- as.numeric(charts[,4])
 					charts[,4] = round(charts[,4],6)
@@ -121,7 +123,8 @@ server <- function(input,output,session){
 					return(charts)
 			
 				} else if (nrow(uploaddata) > nrow(rawdata)) {
-			
+					
+					output$rsmessage <- renderText({NULL})
 					output$errormessage <- renderText({"上傳失敗：您上傳的資料檔資料筆數過多"})
 					charts[,4] <- as.numeric(charts[,4])
 					charts[,4] = round(charts[,4],6)
@@ -131,7 +134,7 @@ server <- function(input,output,session){
 				} else {
 					
 					output$errormessage <- renderText({NULL})
-				
+					
 					##merge驗證檔和上傳檔
 					colnames(uploaddata)[2]<-"id"
 					newdata <- merge(rawdata[,c(1,4)],uploaddata[,2:3],by="id",all.x=T)
@@ -144,6 +147,7 @@ server <- function(input,output,session){
 			
 					if (nrow(charts)==0){
 			
+						output$rsmessage <- renderText({NULL})
 						##若排行榜為空，直接建立新的表
 						upt=  as.character(user.uploadtime)
 						charts = data.frame("1",user.teamnumber,user.teamname,user.rs,upt)
@@ -190,6 +194,7 @@ server <- function(input,output,session){
 							if	(user.rs > charts[charts[,2]==user.teamnumber,4])
 							{
 					
+								output$rsmessage <- renderText({paste0("根據您上傳資料，R squared是",user.rs)})
 								##R_squared有提高，則更新、重新排序
 								charts[charts[,2]==user.teamnumber,4] <- user.rs
 								levels(charts[,5]) <- c(levels(charts[,5]),formattime(user.uploadtime))
@@ -205,6 +210,7 @@ server <- function(input,output,session){
 
 							}	else	{
 
+								output$rsmessage <- renderText({paste0("根據您上傳資料，R squared是",user.rs)})
 								##若R_squared沒有提昇或不改變排行榜
 								colnames(charts) <- c("排名","隊號","隊名","R squared","上傳時間")
 								return(charts)
